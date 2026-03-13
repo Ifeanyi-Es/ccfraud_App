@@ -1,0 +1,27 @@
+#loading model
+joblib
+
+# Core Python libraries
+numpy==2.3.4
+pandas==2.3.3
+scipy==1.16.3
+scikit-learn==1.8.0
+
+# ML models
+xgboost==3.1.2
+lightgbm==4.6.0
+catboost==1.2.8
+imbalanced-learn==0.14.1
+scikeras==0.13.0
+tensorflow==2.20.0
+keras==3.13.0
+
+# SHAP explainability
+numba==0.64.0
+shap==0.50.0
+
+# Category encoding
+category_encoders==2.9.0
+
+# Streamlit app
+streamlit==1.54.0
