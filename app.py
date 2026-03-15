@@ -2,9 +2,12 @@ import os
 import streamlit as st
 import pandas as pd
 import joblib
+import shap 
+import numpy as np
 from datetime import date, datetime, time
-from src.mlp_model import build_mlp # needed for MLP unpickling
+from src.mlp_model import build_mlp , mlp_clf , SafeKerasClassifier # needed for MLP unpickling
 from src.feature_engineering_utils import DateTimeTransformer, DynamicNumericTransformer
+from src.model_insights import model_insights
 # ML models / encoders for unpickling
 from sklearn.ensemble import RandomForestClassifier, StackingClassifier
 from sklearn.linear_model import LogisticRegression
@@ -25,7 +28,7 @@ def load_model(path):
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, "models", "Hybrid_Stack_on_SMOTE.pkl")
 
-pipeline = load_model(model_path)
+model = load_model(model_path)
 
 
 # page configuration
@@ -90,7 +93,7 @@ with st.form("transaction_form"):
 # dataframe for prediction
 if submit:
 
-    input_df = pd.DataFrame([{
+    input_df = pd.DataFrame([{ 
         "merchant": merchant,
         "category": category,
         "amt": amt,
@@ -112,17 +115,20 @@ if submit:
     # Duplicate row for stacking
     input_df_dup = pd.concat([input_df, input_df], ignore_index=True)
 
-    prediction_array = pipeline.predict(input_df_dup)
-    probability_array = pipeline.predict_proba(input_df_dup)[:, 1]
+    prediction_array = model.predict(input_df_dup)
+    probability_array = model.predict_proba(input_df_dup)[:, 1]
 
     # Take only first row
     prediction = prediction_array[0]
     probability = probability_array[0]
 
     if prediction == 1:
-        st.error("🚨 Fraud Detected")
+        st.error("🚨 Fraud Detected") #display result
     else:
-        st.success("✅ Legitimate Transaction")
+        st.success("✅ Legitimate Transaction") # display result
 
     st.write(f"Fraud Probability: {probability:.2%}")
 
+    result = model_insights(model, input_df)   # Call the model_insights function
+
+    st.write(result["feature_contributions"])
