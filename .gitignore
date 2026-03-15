@@ -14,3 +14,8 @@ Thumbs.db
 
 # Environment variables
 .env
+
+data/
+notebooks/
+*.csv
+*.ipynb
