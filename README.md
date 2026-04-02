@@ -1,4 +1,4 @@
-This work is a  hybrid  fraud detection system which  integrates real time  interpretability, allowing financial security analysts to obtain useful information when fraud warnings are set off. These insights offer a useful foundation for making smart choices and act as a basis for engaging clients in order to effectively solve problems. 
+This work is a  hybrid  fraud detection system which  integrates real time  interpretability.
 
 ### The repository of this work can be cloned and tested via Github using 
 
